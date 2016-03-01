@@ -18580,7 +18580,7 @@ i2c_address(slaveAddr, 0);
 i2c_write(dataAddr);
 i2c_restart();
 i2c_address(slaveAddr, 1);
-unsigned char data1 = i2c_read(0);
+char data1 = i2c_read(0);
 i2c_stop();
 return data1;
 }

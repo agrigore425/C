@@ -59,31 +59,12 @@ void main(void)
     //Initialize PIC SPI for accelerometer/gyroscope
     ecan_init();
     i2c_init();
-    //init_spi();
-    //init_AccelFS();
     
-
-    char checkRegReady = 0xA7; //Read config & Address of STATUS_REG_A/G
     
     short xAccelRaw = 0;
     short yAccelRaw = 0;
     short zAccelRaw = 0;
     
-    float xAccel = 0;
-    float yAccel = 0;
-    float zAccel = 0;
-    
-    
-    int16_t xGyroRaw = 0;
-    int16_t yGyroRaw = 0;
-    int16_t zGyroRaw = 0;
-    
-    double loopPeriod = 0.01;
-
-    
-    float xGyro = 0;
-    float yGyro = 0;
-    float zGyro = 0;
     
     unsigned int tempOne = 0;
     unsigned int tempTwo = 0;

@@ -14925,7 +14925,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _i2c_address (2 , _slaveAddr -> -> 1 `i `uc ]
 "133
 [v _data1 `uc ~T0 @X0 1 a ]
-[; ;i2c.c: 133: unsigned char data1 = i2c_read(0);
+[; ;i2c.c: 133: char data1 = i2c_read(0);
 [e = _data1 ( _i2c_read (1 -> -> 0 `i `uc ]
 [; ;i2c.c: 134: i2c_stop();
 "134

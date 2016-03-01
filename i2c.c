@@ -130,7 +130,7 @@ short i2c_get_byte(char slaveAddr, char dataAddr)
     i2c_write(dataAddr);                // SUB
     i2c_restart();                      // SR?
     i2c_address(slaveAddr, 1);          // SAD + R
-    unsigned char data1 = i2c_read(0);  // DATA
+    char data1 = i2c_read(0);  // DATA
     i2c_stop();                         // STOP
     return data1;
 }
