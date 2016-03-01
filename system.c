@@ -25,18 +25,17 @@
 oscillator configurations. */
 void ConfigureOscillator(void)
 {
-    /* TODO Add clock switching code if appropriate.  */
-
     /* Typical actions in this function are to tweak the oscillator tuning
     register, select new clock sources, and to wait until new clock sources
     are stable before resuming execution of the main project. */
-    OSCTUNEbits.PLLEN = 1; //enable x4 clock
-    OSCCONbits.IRCF0 = 1;
+    OSCCONbits.IRCF2 = 1;       // All set -> 8 MHz
     OSCCONbits.IRCF1 = 1;
-    OSCCONbits.IRCF2 = 1;
+    OSCCONbits.IRCF0 = 1;
     
-    //set pin as clock output
-    TRISAbits.TRISA6 = 0;
+    OSCCONbits.SCS1 = 0;        // All clear -> select primary oscillator
+    OSCCONbits.SCS0 = 0;
+    
+    OSCTUNEbits.PLLEN = 1;      // Enable PLL x4
 }
 
 void setAnalogIn()
@@ -112,13 +111,14 @@ void init_spi()
     
     SSPCON1bits.SSPEN = 0;      // Clear bit to reset, SPI pins
     
-    SSPCON1bits.CKP = 0;        // Set polarity to idle at 0
-    SSPSTATbits.CKE = 1;        // Set transmit on rising edge
+    SSPCON1bits.CKP = 1;        // Set polarity to idle at 1
+    SSPSTATbits.CKE = 0;        // Set transmit on rising edge
     SSPSTATbits.SMP = 0;        // Set Sample bit to 0
     SSPCON1bits.SSPM0 = 0;      // Set SSPM[3:0] as stated in manual
     SSPCON1bits.SSPM1 = 0;      // In order to divide by 4 (Fosc/4)
     SSPCON1bits.SSPM2 = 0;
     SSPCON1bits.SSPM3 = 0;
+    SSPCON1bits.WCOL = 0;       // Clear the write buffer
     
     SSPCON1bits.SSPEN = 1;      // Set bit to re enable SPI
        
@@ -139,7 +139,7 @@ char spi_read()
 
 void spi_write(char message)
 {
-    while(SSPCON1bits.WCOL);
+    //while(SSPCON1bits.WCOL);
     SSPBUF = message;
 }
 

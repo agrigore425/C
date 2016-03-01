@@ -18505,24 +18505,58 @@ void selectAN7();
 
 unsigned int readADC();
 
-# 29 "main.c"
+# 5 "can.h"
+typedef struct Message {
+char data[8];
+short sid;
+char len;
+} Message;
+
+void ecan_init();
+void ecan_send(Message* mess);
+void ecan_receive_rxb0(Message* mess);
+void ecan_receive_rxb1(Message* mess);
+char ecan_rxb0_data_ready();
+char ecan_rxb1_data_ready();
+void ecan_rxb0_clear();
+void ecan_rxb1_clear();
+
+# 5 "i2c.h"
+void i2c_init(void);
+void i2c_wait(void);
+void i2c_start(void);
+void i2c_restart(void);
+void i2c_stop(void);
+void i2c_write(unsigned char data);
+void i2c_address(unsigned char address, unsigned char mode);
+unsigned char i2c_read(unsigned char ack);
+unsigned short i2c_get_udata(char mAddr, char addr);
+short i2c_get_data(char mAddr, char addr);
+void i2c_write_raw(char cnt, char cmd);
+short i2c_get_byte(char slaveAddr, char dataAddr);
+void i2c_writeToReg(char slaveAddr, char destAddr, char sendData);
+
+# 31 "main.c"
 typedef int bool;
 
-# 52
+# 54
 void main(void)
 {
 
 ConfigureOscillator();
 
 
-init_spi();
-init_AccelFS();
+ecan_init();
+i2c_init();
+
+
+
 
 char checkRegReady = 0xA7;
 
-int16_t xAccelRaw = 0;
-int16_t yAccelRaw = 0;
-int16_t zAccelRaw = 0;
+short xAccelRaw = 0;
+short yAccelRaw = 0;
+short zAccelRaw = 0;
 
 float xAccel = 0;
 float yAccel = 0;
@@ -18543,90 +18577,34 @@ float zGyro = 0;
 unsigned int tempOne = 0;
 unsigned int tempTwo = 0;
 
+
+char slaveAddr0 = 0x1E;
+char destAddr0 = 0x20;
+char sendData0 = 0b01100111;
+i2c_writeToReg(slaveAddr0, destAddr0, sendData0);
+
+
+slaveAddr0 = 0x1E;
+destAddr0 = 0x24;
+sendData0 = 0b11110000;
+i2c_writeToReg(slaveAddr0, destAddr0, sendData0);
+
 while(1)
 {
 
+# 121
+xAccelRaw = i2c_get_byte(0x1E ,0x28);
+xAccelRaw += i2c_get_byte(0x1E,0x29) << 8;
 
 
-selectAN0();
-tempOne = readADC();
+Message accelPack;
+accelPack.sid = 0x000;
+accelPack.len = 2;
+accelPack.data[0] = xAccelRaw;
+accelPack.data[1] = xAccelRaw >> 8;
 
-
-
-selectAN1();
-tempTwo = readADC();
-
-
-
-
-LATCbits.LATC6 = 1;
-LATCbits.LATC7 = 0;
-
-
-spi_write(checkRegReady);
-spi_write(0x00);
-char accelStat = spi_read();
-accelStat = (accelStat & 0x08) >> 3;
-
-if(accelStat)
-{
-
-
-
-xAccelRaw = readX();
-
-yAccelRaw = readY();
-
-zAccelRaw = readZ();
-}
-LATCbits.LATC6 = 1;
-LATCbits.LATC7 = 1;
-
-
-xAccel = xAccelRaw * 0.000122;
-yAccel = yAccelRaw * 0.000122;
-zAccel = zAccelRaw * 0.000122;
-
-# 134
-LATCbits.LATC6 = 0;
-LATCbits.LATC7 = 1;
-
-
-spi_write(checkRegReady);
-spi_write(0x00);
-char gyroStat = spi_read();
-gyroStat = (gyroStat & 0x08) >> 3;
-
-if(gyroStat)
-{
-
-
-
-xGyroRaw = readX();
-
-yGyroRaw = readY();
-
-zGyroRaw = readZ();
-}
-LATCbits.LATC6 = 1;
-LATCbits.LATC7 = 1;
-
-
-
-float xGyroRate = (float) xGyroRaw * 0.00875;
-float yGyroRate = (float) yGyroRaw * 0.00875;
-float zGyroRate = (float) zGyroRaw * 0.00875;
-
-delay_milli(10);
-
-xGyro = xGyroRate*loopPeriod;
-yGyro = yGyroRate*loopPeriod;
-zGyro = zGyroRate*loopPeriod;
-
-
-
+ecan_send(&accelPack);
 
 }
-
 }
 

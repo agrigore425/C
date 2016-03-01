@@ -7,6 +7,8 @@
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
       <itemPath>ADC_Config.h</itemPath>
+      <itemPath>can.h</itemPath>
+      <itemPath>i2c.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -21,6 +23,8 @@
       <itemPath>system.c</itemPath>
       <itemPath>user.c</itemPath>
       <itemPath>ADC_Config.c</itemPath>
+      <itemPath>can.c</itemPath>
+      <itemPath>i2c.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -1805,7 +1809,6 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
@@ -1823,7 +1826,7 @@
         <property key="memories.programmemory.partition2.start"
                   value="${memories.programmemory.partition2.start.value}"/>
         <property key="memories.programmemory.start" value="0x0"/>
-        <property key="poweroptions.powerenable" value="true"/>
+        <property key="poweroptions.powerenable" value="false"/>
         <property key="programmertogo.imagename" value=""/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>

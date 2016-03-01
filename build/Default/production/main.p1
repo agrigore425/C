@@ -2,60 +2,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
 "33 system.h
 [v _ConfigureOscillator `(v ~T0 @X0 0 ef ]
+"11 can.h
+[v _ecan_init `(v ~T0 @X0 0 ef ]
+"5 i2c.h
+[v _i2c_init `(v ~T0 @X0 0 ef ]
 "17
-[v _init_spi `(v ~T0 @X0 0 ef ]
-"18
-[v _init_AccelFS `(v ~T0 @X0 0 ef ]
-"14 ADC_Config.h
-[v _selectAN0 `(v ~T0 @X0 0 ef ]
-"23
-[v _readADC `(ui ~T0 @X0 0 ef ]
-"15
-[v _selectAN1 `(v ~T0 @X0 0 ef ]
-"29190 /opt/microchip/xc8/v1.36/include/pic18f4685.h
-[s S1816 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S1816 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
-"29200
-[s S1817 :1 `uc 1 ]
-[n S1817 . LC0 ]
-"29203
-[s S1818 :1 `uc 1 :1 `uc 1 ]
-[n S1818 . . LC1 ]
-"29207
-[s S1819 :2 `uc 1 :1 `uc 1 ]
-[n S1819 . . LC2 ]
-"29211
-[s S1820 :3 `uc 1 :1 `uc 1 ]
-[n S1820 . . LC3 ]
-"29215
-[s S1821 :4 `uc 1 :1 `uc 1 ]
-[n S1821 . . LC4 ]
-"29219
-[s S1822 :5 `uc 1 :1 `uc 1 ]
-[n S1822 . . LC5 ]
-"29223
-[s S1823 :6 `uc 1 :1 `uc 1 ]
-[n S1823 . . LC6 ]
-"29227
-[s S1824 :7 `uc 1 :1 `uc 1 ]
-[n S1824 . . LC7 ]
-"29189
-[u S1815 `S1816 1 `S1817 1 `S1818 1 `S1819 1 `S1820 1 `S1821 1 `S1822 1 `S1823 1 `S1824 1 ]
-[n S1815 . . . . . . . . . . ]
-"29232
-[v _LATCbits `VS1815 ~T0 @X0 0 e@3979 ]
-"21 system.h
-[v _spi_write `(v ~T0 @X0 0 ef1`uc ]
-"20
-[v _spi_read `(uc ~T0 @X0 0 ef ]
-"24
-[v _readX `(i ~T0 @X0 0 ef ]
-"25
-[v _readY `(i ~T0 @X0 0 ef ]
-"26
-[v _readZ `(i ~T0 @X0 0 ef ]
+[v _i2c_writeToReg `(v ~T0 @X0 0 ef3`uc`uc`uc ]
 "16
-[v _delay_milli `(v ~T0 @X0 0 ef1`ui ]
+[v _i2c_get_byte `(s ~T0 @X0 0 ef2`uc`uc ]
+"5 can.h
+[s S2101 `uc -> 8 `i `s 1 `uc 1 ]
+[n S2101 Message data sid len ]
+"12
+[v _ecan_send `(v ~T0 @X0 0 ef1`*S2101 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -14623,235 +14582,179 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ADC_Config.h: 20: void selectAN6();
 [; ;ADC_Config.h: 21: void selectAN7();
 [; ;ADC_Config.h: 23: unsigned int readADC();
-[; ;main.c: 29: typedef int bool;
-"52 main.c
+[; ;can.h: 5: typedef struct Message {
+[; ;can.h: 6: char data[8];
+[; ;can.h: 7: short sid;
+[; ;can.h: 8: char len;
+[; ;can.h: 9: } Message;
+[; ;can.h: 11: void ecan_init();
+[; ;can.h: 12: void ecan_send(Message* mess);
+[; ;can.h: 13: void ecan_receive_rxb0(Message* mess);
+[; ;can.h: 14: void ecan_receive_rxb1(Message* mess);
+[; ;can.h: 15: char ecan_rxb0_data_ready();
+[; ;can.h: 16: char ecan_rxb1_data_ready();
+[; ;can.h: 17: void ecan_rxb0_clear();
+[; ;can.h: 18: void ecan_rxb1_clear();
+[; ;i2c.h: 5: void i2c_init(void);
+[; ;i2c.h: 6: void i2c_wait(void);
+[; ;i2c.h: 7: void i2c_start(void);
+[; ;i2c.h: 8: void i2c_restart(void);
+[; ;i2c.h: 9: void i2c_stop(void);
+[; ;i2c.h: 10: void i2c_write(unsigned char data);
+[; ;i2c.h: 11: void i2c_address(unsigned char address, unsigned char mode);
+[; ;i2c.h: 12: unsigned char i2c_read(unsigned char ack);
+[; ;i2c.h: 13: unsigned short i2c_get_udata(char mAddr, char addr);
+[; ;i2c.h: 14: short i2c_get_data(char mAddr, char addr);
+[; ;i2c.h: 15: void i2c_write_raw(char cnt, char cmd);
+[; ;i2c.h: 16: short i2c_get_byte(char slaveAddr, char dataAddr);
+[; ;i2c.h: 17: void i2c_writeToReg(char slaveAddr, char destAddr, char sendData);
+[; ;main.c: 31: typedef int bool;
+"54 main.c
 [v _main `(v ~T0 @X0 1 ef ]
-"53
+"55
 {
-[; ;main.c: 52: void main(void)
-[; ;main.c: 53: {
+[; ;main.c: 54: void main(void)
+[; ;main.c: 55: {
 [e :U _main ]
 [f ]
-[; ;main.c: 55: ConfigureOscillator();
-"55
+[; ;main.c: 57: ConfigureOscillator();
+"57
 [e ( _ConfigureOscillator ..  ]
-[; ;main.c: 58: init_spi();
-"58
-[e ( _init_spi ..  ]
-[; ;main.c: 59: init_AccelFS();
-"59
-[e ( _init_AccelFS ..  ]
+[; ;main.c: 60: ecan_init();
+"60
+[e ( _ecan_init ..  ]
+[; ;main.c: 61: i2c_init();
 "61
+[e ( _i2c_init ..  ]
+"66
 [v _checkRegReady `uc ~T0 @X0 1 a ]
-[; ;main.c: 61: char checkRegReady = 0xA7;
+[; ;main.c: 66: char checkRegReady = 0xA7;
 [e = _checkRegReady -> -> 167 `i `uc ]
-"63
-[v _xAccelRaw `i ~T0 @X0 1 a ]
-[; ;main.c: 63: int16_t xAccelRaw = 0;
-[e = _xAccelRaw -> 0 `i ]
-"64
-[v _yAccelRaw `i ~T0 @X0 1 a ]
-[; ;main.c: 64: int16_t yAccelRaw = 0;
-[e = _yAccelRaw -> 0 `i ]
-"65
-[v _zAccelRaw `i ~T0 @X0 1 a ]
-[; ;main.c: 65: int16_t zAccelRaw = 0;
-[e = _zAccelRaw -> 0 `i ]
-"67
-[v _xAccel `f ~T0 @X0 1 a ]
-[; ;main.c: 67: float xAccel = 0;
-[e = _xAccel -> -> 0 `i `f ]
 "68
-[v _yAccel `f ~T0 @X0 1 a ]
-[; ;main.c: 68: float yAccel = 0;
-[e = _yAccel -> -> 0 `i `f ]
+[v _xAccelRaw `s ~T0 @X0 1 a ]
+[; ;main.c: 68: short xAccelRaw = 0;
+[e = _xAccelRaw -> -> 0 `i `s ]
 "69
-[v _zAccel `f ~T0 @X0 1 a ]
-[; ;main.c: 69: float zAccel = 0;
-[e = _zAccel -> -> 0 `i `f ]
+[v _yAccelRaw `s ~T0 @X0 1 a ]
+[; ;main.c: 69: short yAccelRaw = 0;
+[e = _yAccelRaw -> -> 0 `i `s ]
+"70
+[v _zAccelRaw `s ~T0 @X0 1 a ]
+[; ;main.c: 70: short zAccelRaw = 0;
+[e = _zAccelRaw -> -> 0 `i `s ]
 "72
-[v _xGyroRaw `i ~T0 @X0 1 a ]
-[; ;main.c: 72: int16_t xGyroRaw = 0;
-[e = _xGyroRaw -> 0 `i ]
+[v _xAccel `f ~T0 @X0 1 a ]
+[; ;main.c: 72: float xAccel = 0;
+[e = _xAccel -> -> 0 `i `f ]
 "73
-[v _yGyroRaw `i ~T0 @X0 1 a ]
-[; ;main.c: 73: int16_t yGyroRaw = 0;
-[e = _yGyroRaw -> 0 `i ]
+[v _yAccel `f ~T0 @X0 1 a ]
+[; ;main.c: 73: float yAccel = 0;
+[e = _yAccel -> -> 0 `i `f ]
 "74
-[v _zGyroRaw `i ~T0 @X0 1 a ]
-[; ;main.c: 74: int16_t zGyroRaw = 0;
-[e = _zGyroRaw -> 0 `i ]
-"76
-[v _loopPeriod `d ~T0 @X0 1 a ]
-[; ;main.c: 76: double loopPeriod = 0.01;
-[e = _loopPeriod .0.01 ]
+[v _zAccel `f ~T0 @X0 1 a ]
+[; ;main.c: 74: float zAccel = 0;
+[e = _zAccel -> -> 0 `i `f ]
+"77
+[v _xGyroRaw `i ~T0 @X0 1 a ]
+[; ;main.c: 77: int16_t xGyroRaw = 0;
+[e = _xGyroRaw -> 0 `i ]
+"78
+[v _yGyroRaw `i ~T0 @X0 1 a ]
+[; ;main.c: 78: int16_t yGyroRaw = 0;
+[e = _yGyroRaw -> 0 `i ]
 "79
-[v _xGyro `f ~T0 @X0 1 a ]
-[; ;main.c: 79: float xGyro = 0;
-[e = _xGyro -> -> 0 `i `f ]
-"80
-[v _yGyro `f ~T0 @X0 1 a ]
-[; ;main.c: 80: float yGyro = 0;
-[e = _yGyro -> -> 0 `i `f ]
+[v _zGyroRaw `i ~T0 @X0 1 a ]
+[; ;main.c: 79: int16_t zGyroRaw = 0;
+[e = _zGyroRaw -> 0 `i ]
 "81
-[v _zGyro `f ~T0 @X0 1 a ]
-[; ;main.c: 81: float zGyro = 0;
-[e = _zGyro -> -> 0 `i `f ]
-"83
-[v _tempOne `ui ~T0 @X0 1 a ]
-[; ;main.c: 83: unsigned int tempOne = 0;
-[e = _tempOne -> -> 0 `i `ui ]
+[v _loopPeriod `d ~T0 @X0 1 a ]
+[; ;main.c: 81: double loopPeriod = 0.01;
+[e = _loopPeriod .0.01 ]
 "84
+[v _xGyro `f ~T0 @X0 1 a ]
+[; ;main.c: 84: float xGyro = 0;
+[e = _xGyro -> -> 0 `i `f ]
+"85
+[v _yGyro `f ~T0 @X0 1 a ]
+[; ;main.c: 85: float yGyro = 0;
+[e = _yGyro -> -> 0 `i `f ]
+"86
+[v _zGyro `f ~T0 @X0 1 a ]
+[; ;main.c: 86: float zGyro = 0;
+[e = _zGyro -> -> 0 `i `f ]
+"88
+[v _tempOne `ui ~T0 @X0 1 a ]
+[; ;main.c: 88: unsigned int tempOne = 0;
+[e = _tempOne -> -> 0 `i `ui ]
+"89
 [v _tempTwo `ui ~T0 @X0 1 a ]
-[; ;main.c: 84: unsigned int tempTwo = 0;
+[; ;main.c: 89: unsigned int tempTwo = 0;
 [e = _tempTwo -> -> 0 `i `ui ]
-[; ;main.c: 86: while(1)
-"86
-[e :U 2103 ]
-[; ;main.c: 87: {
-"87
-{
-[; ;main.c: 91: selectAN0();
-"91
-[e ( _selectAN0 ..  ]
-[; ;main.c: 92: tempOne = readADC();
 "92
-[e = _tempOne ( _readADC ..  ]
-[; ;main.c: 96: selectAN1();
-"96
-[e ( _selectAN1 ..  ]
-[; ;main.c: 97: tempTwo = readADC();
-"97
-[e = _tempTwo ( _readADC ..  ]
-[; ;main.c: 102: LATCbits.LATC6 = 1;
-"102
-[e = . . _LATCbits 0 6 -> -> 1 `i `uc ]
-[; ;main.c: 103: LATCbits.LATC7 = 0;
+[v _slaveAddr0 `uc ~T0 @X0 1 a ]
+[; ;main.c: 92: char slaveAddr0 = 0x1E;
+[e = _slaveAddr0 -> -> 30 `i `uc ]
+"93
+[v _destAddr0 `uc ~T0 @X0 1 a ]
+[; ;main.c: 93: char destAddr0 = 0x20;
+[e = _destAddr0 -> -> 32 `i `uc ]
+"94
+[v _sendData0 `uc ~T0 @X0 1 a ]
+[; ;main.c: 94: char sendData0 = 0b01100111;
+[e = _sendData0 -> -> 103 `i `uc ]
+[; ;main.c: 95: i2c_writeToReg(slaveAddr0, destAddr0, sendData0);
+"95
+[e ( _i2c_writeToReg (3 , , _slaveAddr0 _destAddr0 _sendData0 ]
+[; ;main.c: 98: slaveAddr0 = 0x1E;
+"98
+[e = _slaveAddr0 -> -> 30 `i `uc ]
+[; ;main.c: 99: destAddr0 = 0x24;
+"99
+[e = _destAddr0 -> -> 36 `i `uc ]
+[; ;main.c: 100: sendData0 = 0b11110000;
+"100
+[e = _sendData0 -> -> 240 `i `uc ]
+[; ;main.c: 101: i2c_writeToReg(slaveAddr0, destAddr0, sendData0);
+"101
+[e ( _i2c_writeToReg (3 , , _slaveAddr0 _destAddr0 _sendData0 ]
+[; ;main.c: 103: while(1)
 "103
-[e = . . _LATCbits 0 7 -> -> 0 `i `uc ]
-[; ;main.c: 106: spi_write(checkRegReady);
-"106
-[e ( _spi_write (1 _checkRegReady ]
-[; ;main.c: 107: spi_write(0x00);
-"107
-[e ( _spi_write (1 -> -> 0 `i `uc ]
-"108
-[v _accelStat `uc ~T0 @X0 1 a ]
-[; ;main.c: 108: char accelStat = spi_read();
-[e = _accelStat ( _spi_read ..  ]
-[; ;main.c: 109: accelStat = (accelStat & 0x08) >> 3;
-"109
-[e = _accelStat -> >> & -> _accelStat `i -> 8 `i -> 3 `i `uc ]
-[; ;main.c: 111: if(accelStat)
-"111
-[e $ ! != -> _accelStat `i -> -> -> 0 `i `uc `i 2105  ]
-[; ;main.c: 112: {
-"112
-{
-[; ;main.c: 116: xAccelRaw = readX();
-"116
-[e = _xAccelRaw ( _readX ..  ]
-[; ;main.c: 118: yAccelRaw = readY();
-"118
-[e = _yAccelRaw ( _readY ..  ]
-[; ;main.c: 120: zAccelRaw = readZ();
-"120
-[e = _zAccelRaw ( _readZ ..  ]
-"121
-}
-[e :U 2105 ]
-[; ;main.c: 121: }
-[; ;main.c: 122: LATCbits.LATC6 = 1;
-"122
-[e = . . _LATCbits 0 6 -> -> 1 `i `uc ]
-[; ;main.c: 123: LATCbits.LATC7 = 1;
-"123
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
-[; ;main.c: 126: xAccel = xAccelRaw * 0.000122;
-"126
-[e = _xAccel -> * -> _xAccelRaw `d .0.000122 `f ]
-[; ;main.c: 127: yAccel = yAccelRaw * 0.000122;
-"127
-[e = _yAccel -> * -> _yAccelRaw `d .0.000122 `f ]
-[; ;main.c: 128: zAccel = zAccelRaw * 0.000122;
-"128
-[e = _zAccel -> * -> _zAccelRaw `d .0.000122 `f ]
-[; ;main.c: 134: LATCbits.LATC6 = 0;
-"134
-[e = . . _LATCbits 0 6 -> -> 0 `i `uc ]
-[; ;main.c: 135: LATCbits.LATC7 = 1;
-"135
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
-[; ;main.c: 138: spi_write(checkRegReady);
-"138
-[e ( _spi_write (1 _checkRegReady ]
-[; ;main.c: 139: spi_write(0x00);
-"139
-[e ( _spi_write (1 -> -> 0 `i `uc ]
-"140
-[v _gyroStat `uc ~T0 @X0 1 a ]
-[; ;main.c: 140: char gyroStat = spi_read();
-[e = _gyroStat ( _spi_read ..  ]
-[; ;main.c: 141: gyroStat = (gyroStat & 0x08) >> 3;
-"141
-[e = _gyroStat -> >> & -> _gyroStat `i -> 8 `i -> 3 `i `uc ]
-[; ;main.c: 143: if(gyroStat)
-"143
-[e $ ! != -> _gyroStat `i -> -> -> 0 `i `uc `i 2106  ]
-[; ;main.c: 144: {
-"144
-{
-[; ;main.c: 148: xGyroRaw = readX();
-"148
-[e = _xGyroRaw ( _readX ..  ]
-[; ;main.c: 150: yGyroRaw = readY();
-"150
-[e = _yGyroRaw ( _readY ..  ]
-[; ;main.c: 152: zGyroRaw = readZ();
-"152
-[e = _zGyroRaw ( _readZ ..  ]
-"153
-}
-[e :U 2106 ]
-[; ;main.c: 153: }
-[; ;main.c: 154: LATCbits.LATC6 = 1;
-"154
-[e = . . _LATCbits 0 6 -> -> 1 `i `uc ]
-[; ;main.c: 155: LATCbits.LATC7 = 1;
-"155
-[e = . . _LATCbits 0 7 -> -> 1 `i `uc ]
-"159
-[v _xGyroRate `f ~T0 @X0 1 a ]
-[; ;main.c: 159: float xGyroRate = (float) xGyroRaw * 0.00875;
-[e = _xGyroRate -> * -> -> _xGyroRaw `f `d .0.00875 `f ]
-"160
-[v _yGyroRate `f ~T0 @X0 1 a ]
-[; ;main.c: 160: float yGyroRate = (float) yGyroRaw * 0.00875;
-[e = _yGyroRate -> * -> -> _yGyroRaw `f `d .0.00875 `f ]
-"161
-[v _zGyroRate `f ~T0 @X0 1 a ]
-[; ;main.c: 161: float zGyroRate = (float) zGyroRaw * 0.00875;
-[e = _zGyroRate -> * -> -> _zGyroRaw `f `d .0.00875 `f ]
-[; ;main.c: 163: delay_milli(10);
-"163
-[e ( _delay_milli (1 -> -> 10 `i `ui ]
-[; ;main.c: 165: xGyro = xGyroRate*loopPeriod;
-"165
-[e = _xGyro -> * -> _xGyroRate `d _loopPeriod `f ]
-[; ;main.c: 166: yGyro = yGyroRate*loopPeriod;
-"166
-[e = _yGyro -> * -> _yGyroRate `d _loopPeriod `f ]
-[; ;main.c: 167: zGyro = zGyroRate*loopPeriod;
-"167
-[e = _zGyro -> * -> _zGyroRate `d _loopPeriod `f ]
-"172
-}
-[e :U 2102 ]
-"86
-[e $U 2103  ]
 [e :U 2104 ]
-[; ;main.c: 172: }
-[; ;main.c: 174: }
-"174
-[e :UE 2101 ]
+[; ;main.c: 104: {
+"104
+{
+[; ;main.c: 121: xAccelRaw = i2c_get_byte(0x1E ,0x28);
+"121
+[e = _xAccelRaw ( _i2c_get_byte (2 , -> -> 30 `i `uc -> -> 40 `i `uc ]
+[; ;main.c: 122: xAccelRaw += i2c_get_byte(0x1E,0x29) << 8;
+"122
+[e =+ _xAccelRaw -> << -> ( _i2c_get_byte (2 , -> -> 30 `i `uc -> -> 41 `i `uc `i -> 8 `i `s ]
+"125
+[v _accelPack `S2101 ~T0 @X0 1 a ]
+[; ;main.c: 125: Message accelPack;
+[; ;main.c: 126: accelPack.sid = 0x000;
+"126
+[e = . _accelPack 1 -> -> 0 `i `s ]
+[; ;main.c: 127: accelPack.len = 2;
+"127
+[e = . _accelPack 2 -> -> 2 `i `uc ]
+[; ;main.c: 128: accelPack.data[0] = xAccelRaw;
+"128
+[e = *U + &U . _accelPack 0 * -> -> -> 0 `i `ui `ux -> -> # *U &U . _accelPack 0 `ui `ux -> _xAccelRaw `uc ]
+[; ;main.c: 129: accelPack.data[1] = xAccelRaw >> 8;
+"129
+[e = *U + &U . _accelPack 0 * -> -> -> 1 `i `ui `ux -> -> # *U &U . _accelPack 0 `ui `ux -> >> -> _xAccelRaw `i -> 8 `i `uc ]
+[; ;main.c: 131: ecan_send(&accelPack);
+"131
+[e ( _ecan_send (1 &U _accelPack ]
+"133
+}
+[e :U 2103 ]
+"103
+[e $U 2104  ]
+[e :U 2105 ]
+[; ;main.c: 133: }
+[; ;main.c: 134: }
+"134
+[e :UE 2102 ]
 }

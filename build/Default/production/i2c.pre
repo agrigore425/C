@@ -1,15 +1,98 @@
 
-# 1 "system.c"
+# 1 "i2c.c"
 
-# 26 "/opt/microchip/xc8/v1.36/include/htc.h"
-extern const char __xc8_OPTIM_SPEED;
+# 13 "/opt/microchip/xc8/v1.36/include/stdint.h"
+typedef signed char int8_t;
 
-extern double __fpnormalize(double);
+# 20
+typedef signed int int16_t;
+
+# 28
+typedef signed short long int int24_t;
+
+# 36
+typedef signed long int int32_t;
+
+# 43
+typedef unsigned char uint8_t;
+
+# 49
+typedef unsigned int uint16_t;
+
+# 56
+typedef unsigned short long int uint24_t;
+
+# 63
+typedef unsigned long int uint32_t;
+
+# 71
+typedef signed char int_least8_t;
+
+# 78
+typedef signed int int_least16_t;
+
+# 90
+typedef signed short long int int_least24_t;
+
+# 98
+typedef signed long int int_least32_t;
+
+# 105
+typedef unsigned char uint_least8_t;
+
+# 111
+typedef unsigned int uint_least16_t;
+
+# 121
+typedef unsigned short long int uint_least24_t;
+
+# 128
+typedef unsigned long int uint_least32_t;
+
+# 137
+typedef signed char int_fast8_t;
+
+# 144
+typedef signed int int_fast16_t;
+
+# 156
+typedef signed short long int int_fast24_t;
+
+# 164
+typedef signed long int int_fast32_t;
+
+# 171
+typedef unsigned char uint_fast8_t;
+
+# 177
+typedef unsigned int uint_fast16_t;
+
+# 187
+typedef unsigned short long int uint_fast24_t;
+
+# 194
+typedef unsigned long int uint_fast32_t;
+
+# 200
+typedef int32_t intmax_t;
 
 
-# 13 "/opt/microchip/xc8/v1.36/include/xc8debug.h"
-#pragma intrinsic(__builtin_software_breakpoint)
-extern void __builtin_software_breakpoint(void);
+
+
+typedef uint32_t uintmax_t;
+
+
+
+
+typedef int16_t intptr_t;
+
+
+
+
+typedef uint16_t uintptr_t;
+
+# 12 "/opt/microchip/xc8/v1.36/include/stdbool.h"
+typedef unsigned char bool;
 
 # 49 "/opt/microchip/xc8/v1.36/include/pic18f4685.h"
 extern volatile unsigned char RXF6SIDH @ 0xD60;
@@ -18361,322 +18444,152 @@ extern volatile __bit nWR @ (((unsigned) &PORTE)*8) + 1;
 
 extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
-# 18 "/opt/microchip/xc8/v1.36/include/pic18.h"
-__attribute__((__unsupported__("The " "flash_write" " routine is no longer supported. Please use the MPLAB X MCC."))) void flash_write(const unsigned char *, unsigned int, __far unsigned char *);
-__attribute__((__unsupported__("The " "EraseFlash" " routine is no longer supported. Please use the MPLAB X MCC."))) void EraseFlash(unsigned long startaddr, unsigned long endaddr);
+# 5 "i2c.h"
+void i2c_init(void);
+void i2c_wait(void);
+void i2c_start(void);
+void i2c_restart(void);
+void i2c_stop(void);
+void i2c_write(unsigned char data);
+void i2c_address(unsigned char address, unsigned char mode);
+unsigned char i2c_read(unsigned char ack);
+unsigned short i2c_get_udata(char mAddr, char addr);
+short i2c_get_data(char mAddr, char addr);
+void i2c_write_raw(char cnt, char cmd);
+short i2c_get_byte(char slaveAddr, char dataAddr);
+void i2c_writeToReg(char slaveAddr, char destAddr, char sendData);
 
-
-# 42
-#pragma intrinsic(__nop)
-extern void __nop(void);
-
-
-# 155
-#pragma intrinsic(_delay)
-extern __nonreentrant void _delay(unsigned long);
-#pragma intrinsic(_delaywdt)
-extern __nonreentrant void _delaywdt(unsigned long);
-#pragma intrinsic(_delay3)
-extern __nonreentrant void _delay3(unsigned char);
-
-# 13 "/opt/microchip/xc8/v1.36/include/stdint.h"
-typedef signed char int8_t;
-
-# 20
-typedef signed int int16_t;
-
-# 28
-typedef signed short long int int24_t;
-
-# 36
-typedef signed long int int32_t;
-
-# 43
-typedef unsigned char uint8_t;
-
-# 49
-typedef unsigned int uint16_t;
-
-# 56
-typedef unsigned short long int uint24_t;
-
-# 63
-typedef unsigned long int uint32_t;
-
-# 71
-typedef signed char int_least8_t;
-
-# 78
-typedef signed int int_least16_t;
-
-# 90
-typedef signed short long int int_least24_t;
-
-# 98
-typedef signed long int int_least32_t;
-
-# 105
-typedef unsigned char uint_least8_t;
-
-# 111
-typedef unsigned int uint_least16_t;
-
-# 121
-typedef unsigned short long int uint_least24_t;
-
-# 128
-typedef unsigned long int uint_least32_t;
-
-# 137
-typedef signed char int_fast8_t;
-
-# 144
-typedef signed int int_fast16_t;
-
-# 156
-typedef signed short long int int_fast24_t;
-
-# 164
-typedef signed long int int_fast32_t;
-
-# 171
-typedef unsigned char uint_fast8_t;
-
-# 177
-typedef unsigned int uint_fast16_t;
-
-# 187
-typedef unsigned short long int uint_fast24_t;
-
-# 194
-typedef unsigned long int uint_fast32_t;
-
-# 200
-typedef int32_t intmax_t;
-
-
-
-
-typedef uint32_t uintmax_t;
-
-
-
-
-typedef int16_t intptr_t;
-
-
-
-
-typedef uint16_t uintptr_t;
-
-# 12 "/opt/microchip/xc8/v1.36/include/stdbool.h"
-typedef unsigned char bool;
-
-# 14 "system.h"
-void setAnalogIn();
-void setActuatorCntrl();
-void delay_milli(unsigned int time);
-void init_spi();
-void init_AccelFS();
-unsigned int spi_data_ready();
-char spi_read();
-void spi_write(char message);
-unsigned long spi_read_long();
-char oneReadCycle(char num);
-int readX();
-int readY();
-int readZ();
-
-# 33
-void ConfigureOscillator(void);
-
-# 26 "system.c"
-void ConfigureOscillator(void)
+# 13 "i2c.c"
+void i2c_init(void)
 {
 
-# 31
-OSCCONbits.IRCF2 = 1;
-OSCCONbits.IRCF1 = 1;
-OSCCONbits.IRCF0 = 1;
-
-OSCCONbits.SCS1 = 0;
-OSCCONbits.SCS0 = 0;
-
-OSCTUNEbits.PLLEN = 1;
-}
-
-void setAnalogIn()
-{
-
-ADCON1bits.PCFG = 0;
-ADCON2bits.ADFM = 1;
-
-
-
-ADCON1bits.VCFG0 = 0;
-ADCON1bits.VCFG1 = 0;
-
-
-ADCON2bits.ACQT2 = 0;
-ADCON2bits.ACQT1 = 1;
-ADCON2bits.ACQT0 = 0;
-
-
-ADCON2bits.ADCS2 = 0;
-ADCON2bits.ADCS1 = 1;
-ADCON2bits.ADCS0 = 0;
-
-
-
-TRISAbits.TRISA0 = 1;
-TRISAbits.TRISA1 = 1;
-TRISAbits.TRISA2 = 1;
-TRISAbits.TRISA3 = 1;
-TRISAbits.TRISA5 = 1;
-TRISEbits.TRISE0 = 1;
-TRISEbits.TRISE1 = 1;
-TRISEbits.TRISE2 = 1;
-TRISBbits.TRISB1 = 1;
-TRISBbits.TRISB4 = 1;
-TRISBbits.TRISB0 = 1;
-
-
-ADCON0bits.ADON = 1;
-}
-
-void setActuatorCntrl()
-{
-
-TRISDbits.TRISD0 = 0;
-TRISDbits.TRISD1 = 0;
-TRISDbits.TRISD2 = 0;
-TRISDbits.TRISD3 = 0;
-TRISDbits.TRISD4 = 0;
-TRISDbits.TRISD5 = 0;
-TRISDbits.TRISD6 = 0;
-TRISDbits.TRISD7 = 0;
-
-TRISCbits.TRISC0 = 0;
-TRISCbits.TRISC1 = 0;
-TRISCbits.TRISC2 = 0;
-
-# 100
-}
-
-
-void init_spi()
-{
+TRISCbits.RC3 = 1;
 TRISCbits.RC4 = 1;
-TRISCbits.RC5 = 0;
-TRISCbits.RC3 = 0;
 
-TRISCbits.TRISC6 = 0;
-TRISCbits.TRISC7 = 0;
 
-SSPCON1bits.SSPEN = 0;
+SSPCON1= 0b00101000;
+SSPCON2 = 0x00;
 
-SSPCON1bits.CKP = 1;
-SSPSTATbits.CKE = 0;
-SSPSTATbits.SMP = 0;
-SSPCON1bits.SSPM0 = 0;
-SSPCON1bits.SSPM1 = 0;
-SSPCON1bits.SSPM2 = 0;
-SSPCON1bits.SSPM3 = 0;
-SSPCON1bits.WCOL = 0;
 
-SSPCON1bits.SSPEN = 1;
+SSPADD = 79;
+SSPSTAT = 0b11000000;
 
 }
 
-unsigned int spi_data_ready()
-{
-return SSPSTATbits.BF;
+
+void i2c_wait(void){
+while ((SSPCON2 & 0x1F) || (SSPSTAT & 0x04));
 }
 
 
-char spi_read()
+void i2c_start(void)
 {
-while(!SSPSTATbits.BF);
-return SSPBUF;
+i2c_wait();
+SSPCON2bits.SEN = 1;
 }
 
 
-void spi_write(char message)
-{
-
-SSPBUF = message;
+void i2c_restart(void){
+i2c_wait();
+SSPCON2bits.RSEN = 1;
 }
 
-unsigned long spi_read_long()
+
+void i2c_stop(void)
 {
-unsigned long total = 0;
-for(int i = 0; i < 4; i++)
-{
-total += spi_read() << (i * 8);
-}
-return total;
+i2c_wait();
+SSPCON2bits.PEN = 1;
 }
 
-char oneReadCycle(char num)
+
+void i2c_write(unsigned char data)
 {
-delay_milli(30);
-spi_write(num);
-char measure;
-delay_milli(30);
-if(spi_data_ready())
-{
-measure = spi_read();
-}
-return measure;
+i2c_wait();
+SSPBUF = data;
 }
 
-void delay_milli(unsigned int time)
+
+
+void i2c_address(unsigned char address, unsigned char mode)
 {
-for (int i = 0; i < time; i++)
-_delay((unsigned long)((1)*(10000000/4000.0)));
+i2c_wait();
+SSPBUF = (address << 1) + mode;
 }
 
-int readX()
+
+unsigned char i2c_read(unsigned char ack)
 {
 
-spi_write(0xA8);
-spi_write(0x00);
-int x = spi_read();
 
-spi_write(0xA9);
-spi_write(0x00);
-x += spi_read() << 8;
-return x;
+
+unsigned char i2cReadData;
+
+i2c_wait();
+SSPCON2bits.RCEN = 1;
+i2c_wait();
+i2cReadData = SSPBUF;
+i2c_wait();
+if (ack)
+ACKDT = 0;
+else
+ACKDT = 1;
+SSPCON2bits.ACKEN = 1;
+
+return i2cReadData;
 }
 
-int readY()
+unsigned short i2c_get_udata(char mAddr, char addr)
 {
-spi_write(0xAA);
-spi_write(0x00);
-int y = spi_read();
-
-spi_write(0xAB);
-spi_write(0x00);
-y += spi_read() << 8;
-return y;
+i2c_start();
+i2c_address(mAddr, 0);
+i2c_write(addr);
+i2c_restart();
+i2c_address(mAddr, 1);
+unsigned char data1 = i2c_read(1);
+unsigned char data0 = i2c_read(0);
+i2c_stop();
+return data0 + (data1 << 8);
 }
 
-int readZ()
+short i2c_get_data(char mAddr, char addr)
 {
-spi_write(0xAC);
-spi_write(0x00);
-int z = spi_read();
-
-spi_write(0xAD);
-spi_write(0x00);
-z += spi_read() << 8;
-return z;
+i2c_start();
+i2c_address(mAddr, 0);
+i2c_write(addr);
+i2c_restart();
+i2c_address(mAddr, 1);
+unsigned char data1 = i2c_read(1);
+unsigned char data0 = i2c_read(0);
+i2c_stop();
+return (data1 << 8) + data0;
 }
 
-void init_AccelFS()
+void i2c_write_raw(char cnt, char cmd)
 {
+i2c_start();
+i2c_address(0x77, 0);
+i2c_write(cnt);
+i2c_write(cmd);
+i2c_stop();
+}
 
-spi_write(0x21);
-spi_write(0x08);
+short i2c_get_byte(char slaveAddr, char dataAddr)
+{
+i2c_start();
+i2c_address(slaveAddr, 0);
+i2c_write(dataAddr);
+i2c_restart();
+i2c_address(slaveAddr, 1);
+unsigned char data1 = i2c_read(0);
+i2c_stop();
+return data1;
+}
 
+void i2c_writeToReg(char slaveAddr, char destAddr, char sendData)
+{
+i2c_start();
+i2c_address(slaveAddr, 0);
+i2c_write(destAddr);
+i2c_write(sendData);
+i2c_stop();
 }
